@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>攻殻機動隊 S.A.C. 設定判別ツール</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;background:#f3f4f6;color:#111827}
+header{background:#111827;color:#fff;padding:17px 15px;position:sticky;top:0;z-index:5}h1{font-size:20px;margin:0 0 3px}.sub{font-size:11px;opacity:.75}
+main{max-width:760px;margin:auto;padding:10px 11px 70px}.card{background:#fff;border-radius:14px;padding:14px;margin:9px 0;box-shadow:0 2px 10px #0000000b}
+h2{font-size:16px;margin:0 0 10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field{margin-bottom:2px}
+label{font-size:11px;color:#4b5563;display:block;margin-bottom:4px}input,select{width:100%;font-size:16px;padding:9px;border:1px solid #d1d5db;border-radius:9px;background:#fff}
+button{border:0;border-radius:9px;padding:11px 13px;font-weight:700;cursor:pointer}.primary{background:#2563eb;color:#fff;width:100%;font-size:17px;padding:13px}.secondary{background:#e5e7eb;width:100%;margin-top:8px}
+.note{font-size:11px;color:#6b7280;line-height:1.55;margin-top:8px}.warn{background:#fff7ed;color:#9a3412;border-radius:10px;padding:9px;font-size:11px;line-height:1.5;margin-top:6px}
+.result{display:none}.barrow{display:grid;grid-template-columns:54px 1fr 58px;align-items:center;gap:7px;font-size:13px;margin:7px 0}.track{height:18px;background:#e5e7eb;border-radius:9px;overflow:hidden}.fill{height:100%;background:#2563eb}.pct{text-align:right;font-weight:700}
+.badge{display:inline-block;padding:4px 7px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:11px;margin:2px}.strong{background:#ecfdf5;color:#047857}.small{font-size:11px;color:#6b7280}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:6px 4px;border-bottom:1px solid #eee;text-align:center}th{background:#f9fafb}
+.footer{font-size:10px;color:#6b7280;text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<header><h1>攻殻機動隊 S.A.C. 設定判別</h1><div class="sub">ななプレス掲載データ対応 / 手入力版</div></header>
+<main>
+
+<div class="card">
+<h2>① CZ・AT確率</h2>
+<div class="grid">
+<div class="field"><label>通常時ゲーム数</label><input id="g" type="number" min="0" placeholder="例 5000"></div>
+<div class="field"><label>CZ初当り回数</label><input id="cz" type="number" min="0" placeholder="例 22"></div>
+<div class="field"><label>AT初当り回数</label><input id="at" type="number" min="0" placeholder="例 15"></div>
+</div>
+<div class="note">CZ: 設定1 1/238.0 → 設定6 1/210.1。AT: 1/336.3 → 1/278.0。ななプレスはCZよりATを重視と説明。</div>
+</div>
+
+<div class="card">
+<h2>② タチコマS.A.M.（200G・400G）</h2>
+<div class="grid">
+<div class="field"><label>200G 到達回数</label><input id="zone200N" type="number" min="0" placeholder="例 10"></div>
+<div class="field"><label>200G 当選回数</label><input id="zone200Hit" type="number" min="0" placeholder="例 2"></div>
+<div class="field"><label>400G 到達回数</label><input id="zone400N" type="number" min="0" placeholder="例 8"></div>
+<div class="field"><label>400G 当選回数</label><input id="zone400Hit" type="number" min="0" placeholder="例 3"></div>
+</div>
+<div class="note">開発ボイス掲載値：200Gは設定1→6で10.0%→15.0%、400Gは20.0%→33.3%。白の境界失敗後の200G/400Gは必ずタチコマS.A.M.当選となるため、設定判別サンプルから除外。</div>
+<table><tr><th>設定</th><th>200G</th><th>400G</th><th>合算</th></tr>
+<tr><td>1</td><td>10.0%</td><td>20.0%</td><td>30.0%</td></tr>
+<tr><td>2</td><td>10.4%</td><td>22.5%</td><td>32.9%</td></tr>
+<tr><td>3</td><td>11.7%</td><td>25.8%</td><td>37.5%</td></tr>
+<tr><td>4</td><td>13.3%</td><td>28.4%</td><td>41.7%</td></tr>
+<tr><td>5</td><td>14.2%</td><td>31.6%</td><td>45.8%</td></tr>
+<tr><td>6</td><td>15.0%</td><td>33.3%</td><td>48.3%</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>③ 設定変更時・AT終了後の状態</h2>
+<div class="grid">
+<div class="field"><label>判定機会</label><input id="stateN" type="number" min="0" placeholder="例 10"></div>
+<div class="field"><label>通常</label><input id="stateNormal" type="number" min="0" value="0"></div>
+<div class="field"><label>高確</label><input id="stateHigh" type="number" min="0" value="0"></div>
+<div class="field"><label>超高確</label><input id="stateSuper" type="number" min="0" value="0"></div>
+</div>
+<div class="note">設定1: 通常50.0%/高確47.5%/超高確2.5% → 設定6: 41.7%/53.8%/4.6%。特に超高確に設定差。</div>
+</div>
+
+<div class="card">
+<h2>④ CZ失敗後のモード移行</h2>
+<div class="grid">
+<div class="field"><label>モードA</label><input id="modeA" type="number" min="0" value="0"></div>
+<div class="field"><label>モードB</label><input id="modeB" type="number" min="0" value="0"></div>
+<div class="field"><label>モードC</label><input id="modeC" type="number" min="0" value="0"></div>
+<div class="field"><label>モードD</label><input id="modeD" type="number" min="0" value="0"></div>
+</div>
+<div class="note">設定1→6でモードDは15.0%→30.0%。CZ失敗後のモードが分かるケースだけ入力。</div>
+</div>
+
+<div class="card">
+<h2>⑤ S.A.M. 視覚HACK</h2>
+<div class="grid">
+<div class="field"><label>視覚HACKを確認した回数</label><input id="hack" type="number" min="0" value="0"></div>
+<div class="field"><label>視覚HACK判定対象回数</label><input id="hackN" type="number" min="0" value="0"></div>
+</div>
+<div class="note">ななプレス掲載の5.7%～10.6%は「S.A.M.視覚フラグ保有率」。視覚HACKそのものの発生率ではないため、ここは補助的に使用します。</div>
+</div>
+
+<div class="card">
+<h2>⑥ 殲滅ゾーン：青・緑・赤</h2>
+<table><tr><th>色</th><th>発展回数</th><th>CZ以上当選</th></tr>
+<tr><td>青</td><td><input id="blueN" type="number" min="0" value="0"></td><td><input id="blueHit" type="number" min="0" value="0"></td></tr>
+<tr><td>緑</td><td><input id="greenN" type="number" min="0" value="0"></td><td><input id="greenHit" type="number" min="0" value="0"></td></tr>
+<tr><td>赤</td><td><input id="redN" type="number" min="0" value="0"></td><td><input id="redHit" type="number" min="0" value="0"></td></tr>
+</table>
+<div class="note">青: 3.8/3.8/4.6/5.4/7.5/9.6%、緑: 20.0/20.4/22.1/25.1/27.5/30.4%、赤: 55.0/55.4/56.7/58.5/60.4/61.7%。いずれもS.A.M.救済機能発動時は除外。</div>
+</div>
+
+<div class="card">
+<h2>⑦ 殲滅ゾーン 白～紫からのAT</h2>
+<div class="grid">
+<div class="field"><label>通常時ゲーム数（①と同じなら空欄）</label><input id="annG" type="number" min="0" placeholder="例 5000"></div>
+<div class="field"><label>白～紫マス契機AT回数</label><input id="annHit" type="number" min="0" value="0"></div>
+</div>
+<div class="note">掲載値は設定1 1/10676.6 → 設定6 1/4473.0の「確率」。天井・ロングフリーズ等の対象外。通常時G数を分母として近似します。</div>
+</div>
+
+<div class="card">
+<h2>⑧ AT当選時の引き戻しストック</h2>
+<div class="grid">
+<div class="field"><label>AT当選時の抽選機会</label><input id="stockN" type="number" min="0" placeholder="例 20"></div>
+<div class="field"><label>ストック1個のみ</label><input id="stock1" type="number" min="0" value="0"></div>
+<div class="field"><label>ストック2個</label><input id="stock2" type="number" min="0" value="0"></div>
+<div class="field"><label>ストックなし</label><input id="stock0" type="number" min="0" value="0"></div>
+</div>
+<div class="note">1個: 2.5/3.3/4.2/5.0/5.8/6.7%、2個: 0.8/1.3/1.6/2.1/2.5/2.9%、トータル: 3.3/4.6/5.8/7.1/8.3/9.6%。</div>
+</div>
+
+<div class="card">
+<h2>⑨ CZ終了画面</h2>
+<div class="grid">
+<div class="field"><label>青空（デフォルト）</label><input id="czDef" type="number" min="0" value="0"></div>
+<div class="field"><label>青空＋公安9課（設定2以上）</label><input id="cz2" type="number" min="0" value="0"></div>
+<div class="field"><label>オペ子（奇数示唆）</label><input id="czOdd" type="number" min="0" value="0"></div>
+<div class="field"><label>タチコマ（偶数示唆）</label><input id="czEven" type="number" min="0" value="0"></div>
+<div class="field"><label>トグサ（高設定示唆・弱）</label><input id="czWeak" type="number" min="0" value="0"></div>
+<div class="field"><label>イシカワ（高設定示唆・強）</label><input id="czStrong" type="number" min="0" value="0"></div>
+<div class="field"><label>素子（1・4・5・6＋高設定強）</label><input id="czMotoko" type="number" min="0" value="0"></div>
+<div class="field"><label>バカンス（設定4以上）</label><input id="cz4" type="number" min="0" value="0"></div>
+<div class="field"><label>全員集合（設定6）</label><input id="cz6" type="number" min="0" value="0"></div>
+</div>
+<div class="note">「青空＋笑い男」は復活期待度50%で設定示唆ではないため除外。</div>
+</div>
+
+<div class="card">
+<h2>⑩ AT終了画面・一枚絵</h2>
+<div class="grid">
+<div class="field"><label>素子（デフォルト）</label><input id="picDef" type="number" min="0" value="0"></div>
+<div class="field"><label>素子＆タチコマ（高設定弱）</label><input id="picWeak" type="number" min="0" value="0"></div>
+<div class="field"><label>トグサ（奇数示唆）</label><input id="picOdd" type="number" min="0" value="0"></div>
+<div class="field"><label>バトー（偶数示唆）</label><input id="picEven" type="number" min="0" value="0"></div>
+<div class="field"><label>アオイ（設定4以上＋モードD）</label><input id="picAoi" type="number" min="0" value="0"></div>
+</div>
+<div class="note">ポーカー/素子後ろ姿/公安9課/電脳素子/2nd GIGは主にモード・権利示唆なので設定確率には入れません。</div>
+</div>
+
+<div class="card">
+<h2>⑪ S.A.M. エピソード</h2>
+<div class="grid">
+<div class="field"><label>同一エピソード連続（設定2以上）</label><input id="epSame" type="number" min="0" value="0"></div>
+<div class="field"><label>通常のエピソード回数</label><input id="epN" type="number" min="0" value="0"></div>
+</div>
+<div class="note">「暴走の証明」と「恵まれし者たち」は通常交互。同一エピソード連続は設定2以上。</div>
+</div>
+
+<div class="card">
+<h2>⑫ サミートロフィー</h2>
+<div class="grid">
+<div class="field"><label>銅（2以上）</label><input id="t2" type="number" min="0" value="0"></div>
+<div class="field"><label>銀（3以上）</label><input id="t3" type="number" min="0" value="0"></div>
+<div class="field"><label>金（4以上）</label><input id="t4" type="number" min="0" value="0"></div>
+<div class="field"><label>キリン柄（5以上）</label><input id="t5" type="number" min="0" value="0"></div>
+<div class="field"><label>虹（6）</label><input id="t6" type="number" min="0" value="0"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>⑬ エンディング中の上パネル</h2>
+<div class="grid">
+<div class="field"><label>青（奇数）</label><input id="pBlue" type="number" min="0" value="0"></div>
+<div class="field"><label>黄（偶数）</label><input id="pYellow" type="number" min="0" value="0"></div>
+<div class="field"><label>緑（奇数＋高設定）</label><input id="pGreen" type="number" min="0" value="0"></div>
+<div class="field"><label>赤（偶数＋高設定）</label><input id="pRed" type="number" min="0" value="0"></div>
+<div class="field"><label>紫（2以上）</label><input id="pPurple" type="number" min="0" value="0"></div>
+<div class="field"><label>虹（6）</label><input id="pRainbow" type="number" min="0" value="0"></div>
+</div>
+<div class="note">エンディング中、レア小役成立時にPUSH。強レア小役の方が示唆精度が高い。</div>
+</div>
+
+<button class="primary" onclick="judge()">設定判別する</button>
+<div id="result" class="result">
+<div class="card"><h2>判別結果</h2><div id="summary"></div><hr><div id="bars"></div><div id="constraints"></div></div>
+<div class="card"><h2>現在のデータ</h2><div id="checks" class="small"></div></div>
+</div>
+<button class="secondary" onclick="resetAll()">入力をリセット</button>
+<div class="footer">参照：ななプレス「攻殻機動隊（スマスロ）設定差・設定示唆演出まとめ」最終更新 2026/07/06。確定系はハード制約、数値差は尤度計算、弱/強示唆は補助スコアで評価。</div>
+</main>
+
+<script>
+const S=[1,2,3,4,5,6];
+const atP=[1/336.3,1/332,1/319.6,1/298.7,1/285.8,1/278];
+const czP=[1/238,1/236.3,1/231.7,1/220.9,1/214,1/210.1];
+const zone200P=[.100,.104,.117,.133,.142,.150];
+const zone400P=[.200,.225,.258,.284,.316,.333];
+const stateP=[
+ [.500,.475,.025],[.483,.488,.029],[.467,.500,.033],
+ [.450,.513,.038],[.433,.525,.042],[.417,.538,.046]
+];
+const modeP=[
+ [.50,.20,.15,.15],[.487,.213,.15,.15],[.425,.225,.175,.175],
+ [.375,.225,.20,.20],[.262,.238,.225,.275],[.20,.25,.25,.30]
+];
+const blueP=[.038,.038,.046,.054,.075,.096],greenP=[.20,.204,.221,.251,.275,.304],redP=[.55,.554,.567,.585,.604,.617];
+const annP=[1/10676.6,1/9795.3,1/7732.7,1/6127.5,1/5247.7,1/4473];
+const stock1P=[.025,.033,.042,.050,.058,.067],stock2P=[.008,.013,.016,.021,.025,.029];
+
+function n(id){return Math.max(0,Number(document.getElementById(id).value)||0)}
+function binLik(count,trials,p){if(!trials)return 1;if(count>trials)return 1e-40;return Math.max(1e-40,Math.pow(p,count)*Math.pow(1-p,trials-count))}
+function multiLik(obs,probs){
+ let N=obs.reduce((a,b)=>a+b,0); if(!N)return 1;
+ let x=1; for(let j=0;j<obs.length;j++) x*=Math.pow(Math.max(probs[j],1e-12),obs[j]); return Math.max(x,1e-80);
+}
+function addHard(w,minS,maxS){for(let i=0;i<6;i++)if(i+1<minS||i+1>maxS)w[i]=0}
+function soft(w,id,type){
+ let c=n(id); if(!c)return;
+ for(let i=0;i<6;i++){
+   let mult=1;
+   if(type==='odd')mult=(i%2===0)?1.6:.65;
+   if(type==='even')mult=(i%2===1)?1.6:.65;
+   if(type==='weak')mult=[.9,.95,1,1.12,1.22,1.3][i];
+   if(type==='strong')mult=[.75,.85,.95,1.25,1.5,1.7][i];
+   w[i]*=Math.pow(mult,c);
+ }
+}
+function judge(){
+ let w=S.map(()=>1), minS=1,maxS=6,g=n('g');
+ for(let i=0;i<6;i++){
+   if(g){w[i]*=binLik(n('cz'),g,czP[i]);w[i]*=Math.pow(binLik(n('at'),g,atP[i]),1.7)}
+   if(n('zone200N'))w[i]*=binLik(n('zone200Hit'),n('zone200N'),zone200P[i]);
+   if(n('zone400N'))w[i]*=binLik(n('zone400Hit'),n('zone400N'),zone400P[i]);
+   if(n('stateN'))w[i]*=multiLik([n('stateNormal'),n('stateHigh'),n('stateSuper')],stateP[i]);
+   let mn=n('modeA')+n('modeB')+n('modeC')+n('modeD');
+   if(mn)w[i]*=multiLik([n('modeA'),n('modeB'),n('modeC'),n('modeD')],modeP[i]);
+   if(n('hackN'))w[i]*=binLik(n('hack'),n('hackN'),[.057,.061,.069,.09,.101,.106][i]);
+   if(n('blueN'))w[i]*=binLik(n('blueHit'),n('blueN'),blueP[i]);
+   if(n('greenN'))w[i]*=binLik(n('greenHit'),n('greenN'),greenP[i]);
+   if(n('redN'))w[i]*=binLik(n('redHit'),n('redN'),redP[i]);
+   let ag=n('annG')||g;if(ag&&n('annHit'))w[i]*=Math.pow(Math.max(annP[i],1e-12),n('annHit'))*Math.pow(Math.max(1-annP[i],1e-12),Math.max(0,ag-n('annHit')));
+   let sn=n('stockN')||n('stock0')+n('stock1')+n('stock2');
+   if(sn)w[i]*=multiLik([n('stock0'),n('stock1'),n('stock2')],[1-stock1P[i]-stock2P[i],stock1P[i],stock2P[i]]);
+ }
+ // hard constraints from explicit settings
+ if(n('cz2')||n('t2')||n('epSame')||n('pPurple'))minS=Math.max(minS,2);
+ if(n('t3'))minS=Math.max(minS,3);
+ if(n('cz4')||n('picAoi')||n('t4'))minS=Math.max(minS,4);
+ if(n('t5'))minS=Math.max(minS,5);
+ if(n('cz6')||n('t6')||n('pRainbow'))minS=Math.max(minS,6);
+ // Motoko: settings 1,4,5,6; do not hard-eliminate, because it also says high-setting strong.
+ // Aoi is explicitly 4+; already applied.
+ addHard(w,minS,maxS);
+ soft(w,'czOdd','odd');soft(w,'czEven','even');soft(w,'czWeak','weak');soft(w,'czStrong','strong');
+ soft(w,'picOdd','odd');soft(w,'picEven','even');soft(w,'picWeak','weak');
+ // Motoko screen: allowed 1/4/5/6; apply moderate exclusion
+ if(n('czMotoko')) for(let i=0;i<6;i++) if([2,3].includes(i+1))w[i]*=Math.pow(.18,n('czMotoko'));
+ // ending panel: odd/even/high direction
+ soft(w,'pBlue','odd');soft(w,'pYellow','even');soft(w,'pGreen','odd');soft(w,'pRed','even');
+ let sum=w.reduce((a,b)=>a+b,0); if(!sum){w=[0,0,0,0,0,1];sum=1}
+ w=w.map(x=>x/sum);
+ let ord=[0,1,2,3,4,5].sort((a,b)=>w[b]-w[a]),best=ord[0],second=ord[1];
+ document.getElementById('result').style.display='block';
+ document.getElementById('summary').innerHTML=`<span class="badge strong">本命：設定${best+1}</span> <b>${(w[best]*100).toFixed(1)}%</b>　<span class="badge">次点：設定${second+1} ${(w[second]*100).toFixed(1)}%</span>`;
+ document.getElementById('bars').innerHTML=S.map((s,i)=>`<div class="barrow"><b>設定${s}</b><div class="track"><div class="fill" style="width:${(w[i]*100).toFixed(1)}%"></div></div><div class="pct">${(w[i]*100).toFixed(1)}%</div></div>`).join('');
+ let c=[];
+ if(minS>1)c.push(`設定${minS}以上の確定系/濃厚系入力あり`);
+ if(n('t6')||n('cz6')||n('pRainbow'))c.push('設定6濃厚入力あり');
+ if(n('zone200Hit')>n('zone200N')||n('zone400Hit')>n('zone400N'))c.push('タチコマS.A.M.の当選数が到達数を超えています');
+ let mn=n('modeA')+n('modeB')+n('modeC')+n('modeD');if(mn&&mn!==n('cz'))c.push(`CZ失敗後モード入力 ${mn}件（CZ総数 ${n('cz')}件）`);
+ document.getElementById('constraints').innerHTML=c.map(x=>`<div class="warn">⚠ ${x}</div>`).join('');
+ let lines=[];
+ if(g)lines.push(`AT 1/${(g/Math.max(n('at'),1)).toFixed(1)} / CZ 1/${(g/Math.max(n('cz'),1)).toFixed(1)}`);
+ if(n('zone200N'))lines.push(`200Gタチコマ ${(100*n('zone200Hit')/n('zone200N')).toFixed(1)}%`);
+ if(n('zone400N'))lines.push(`400Gタチコマ ${(100*n('zone400Hit')/n('zone400N')).toFixed(1)}%`);
+ if(n('blueN'))lines.push(`青マスCZ以上 ${(100*n('blueHit')/n('blueN')).toFixed(1)}%`);
+ if(n('greenN'))lines.push(`緑マスCZ以上 ${(100*n('greenHit')/n('greenN')).toFixed(1)}%`);
+ if(n('redN'))lines.push(`赤マスCZ以上 ${(100*n('redHit')/n('redN')).toFixed(1)}%`);
+ document.getElementById('checks').innerHTML=lines.join('<br>')||'入力データなし';
+ save();window.scrollTo({top:document.getElementById('result').offsetTop-70,behavior:'smooth'});
+}
+function save(){document.querySelectorAll('input').forEach(x=>localStorage.setItem('kk2_'+x.id,x.value))}
+function load(){document.querySelectorAll('input').forEach(x=>{let v=localStorage.getItem('kk2_'+x.id);if(v!==null)x.value=v})}
+function resetAll(){if(!confirm('入力をすべて消しますか？'))return;document.querySelectorAll('input').forEach(x=>{x.value='';localStorage.removeItem('kk2_'+x.id)});document.getElementById('result').style.display='none'}
+document.querySelectorAll('input').forEach(x=>x.addEventListener('input',save));load();
+</script>
+</body>
+</html>
